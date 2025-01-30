@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Fopus</string>
+    <string name="login_title">Вход</string>
+    <string name="email">Введите email</string>
+    <string name="login_password">Введите пароль</string>
+    <string name="login_agree">Входить автоматически</string>
+    <string name="login_btn">ВОЙТИ</string>
+    <string name="reg_title">Регистрация</string>
+    <string name="reg_tab_1">По номеру</string>
+    <string name="reg_tab_2">По email</string>
+    <string name="separator">|</string>
+    <string name="password_repeat">Повторите пароль</string>
+    <string name="reg_btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
+</resources>
