@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
@@ -24,7 +25,6 @@ class RegisterActivity : AppCompatActivity() {
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
         val passwordRepeatInput = findViewById<EditText>(R.id.passwordRepeatInput)
 
-        val errorBlock = findViewById<TextView>(R.id.errorBlock)
         val registerButton = findViewById<Button>(R.id.registerButton)
 
 
@@ -40,10 +40,6 @@ class RegisterActivity : AppCompatActivity() {
 
                 emailInput.text = null
                 emailInput.hint = getString(R.string.email)
-
-
-                errorBlock.text = "";
-                errorBlock.visibility = View.GONE
             }
         }
 
@@ -59,47 +55,46 @@ class RegisterActivity : AppCompatActivity() {
 
                 emailInput.text = null
                 emailInput.hint = getString(R.string.reg_phone)
-
-
-                errorBlock.text = "";
-                errorBlock.visibility = View.GONE
             }
         }
 
         registerButton.setOnClickListener {
-            var errorText = ""
+            val errors = mutableListOf<String>()
 
             val contact = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
             val passwordRepeat = passwordRepeatInput.text.toString().trim()
 
             if (activeTab == "tabEmail") {
-                if (!contact.contains("@"))
-                    errorText += "Введите правильный email\n"
+                if (!contact.contains("@")) {
+                    errors.add("Введите правильный email")
+                }
             } else if (activeTab == "tabPhone") {
-                if (!contact.startsWith("+"))
-                    errorText += "Введите правильный телефон\n"
+                if (!contact.startsWith("+")) {
+                    errors.add("Введите правильный телефон")
+                }
             }
 
-            if (password.isEmpty())
-                errorText += "Введите пароль\n"
-            else if (password.length < 8)
-                errorText += "Минимальная длина пароля 8 символов\n"
+            if (password.isEmpty()) {
+                errors.add("Введите пароль")
+            } else if (password.length < 8) {
+                errors.add("Минимальная длина пароля 8 символов")
+            }
 
             if (passwordRepeat.isEmpty()) {
-                errorText += "Подтвердите пароль\n"
+                errors.add("Подтвердите пароль")
             }
 
             if (password.isNotEmpty() && passwordRepeat.isNotEmpty() && password != passwordRepeat) {
-                errorText += "Пароли должны совпадать\n"
+                errors.add("Пароли должны совпадать")
             }
 
-            if (errorText != "") {
-                errorBlock.text = errorText;
-                errorBlock.visibility = View.VISIBLE
+            if (errors.isNotEmpty()) {
+                for (error in errors) {
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                }
             } else {
-                errorBlock.text = "";
-                errorBlock.visibility = View.GONE
+                // Все проверки пройдены
             }
         }
     }

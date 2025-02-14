@@ -114,16 +114,6 @@
                 android:textColorHint="#7C7B7B"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/errorBlock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="10dp"
-                android:textColor="#ff0000"
-                />
-
 
             <Button
                 android:id="@+id/registerButton"
