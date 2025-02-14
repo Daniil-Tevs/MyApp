@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context=".MainActivity">
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,6 +34,7 @@
             android:paddingHorizontal="50dp">
 
             <TextView
+                android:id="@+id/tabPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -50,6 +51,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tabEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -112,9 +114,19 @@
                 android:textColorHint="#7C7B7B"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/errorBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="10dp"
+                android:textColor="#ff0000"
+                />
+
 
             <Button
-                android:id="@+id/loginButton"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="30dp"
