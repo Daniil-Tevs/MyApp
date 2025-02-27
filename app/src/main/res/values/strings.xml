@@ -12,4 +12,5 @@
     <string name="password_repeat">Повторите пароль</string>
     <string name="reg_btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="reg_phone">Введите телефон</string>
+    <string name="login_email">Введите Email/Телефон</string>
 </resources>

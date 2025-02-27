@@ -1,5 +1,7 @@
 package com.tevs.myapp
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -95,6 +97,14 @@ class RegisterActivity : AppCompatActivity() {
                 }
             } else {
                 // Все проверки пройдены
+
+                val storage = getSharedPreferences("settings", Context.MODE_PRIVATE)
+                storage.edit().putString("login", contact).apply()
+                storage.edit().putString("password", password).apply()
+                storage.edit().putBoolean("is_auto_login", false).apply()
+
+                val intent = Intent(this, SplashActivity::class.java)
+                startActivity(intent)
             }
         }
     }
