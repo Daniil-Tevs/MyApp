@@ -13,4 +13,6 @@
     <string name="reg_btn">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="reg_phone">Введите телефон</string>
     <string name="login_email">Введите Email/Телефон</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

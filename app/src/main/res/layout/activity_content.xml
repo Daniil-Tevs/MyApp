@@ -9,22 +9,27 @@
     tools:context=".LoginActivity">
 
     <LinearLayout
+        android:id="@+id/frameID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginVertical="100dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".SplashActivity">
 
-        <TextView
-            android:id="@+id/loginText"
-            android:layout_width="wrap_content"
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:navGraph="@navigation/nav_graph"
+            app:defaultNavHost="true" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Coming soon"
-            android:textColor="#6d5a7f"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
+            app:menu="@menu/bottom_nav_menu"
+            android:background="#6d5a7f"
+            />
     </LinearLayout>
 </FrameLayout>

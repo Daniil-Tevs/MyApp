@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -23,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
         val tabPhone = findViewById<TextView>(R.id.tabPhone);
         val tabEmail = findViewById<TextView>(R.id.tabEmail)
 
-        val emailInput = findViewById<EditText>(R.id.emailInput)
+        val loginInput = findViewById<EditText>(R.id.emailInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
         val passwordRepeatInput = findViewById<EditText>(R.id.passwordRepeatInput)
 
@@ -40,8 +41,10 @@ class RegisterActivity : AppCompatActivity() {
                 tabPhone.setTextColor(Color.parseColor("#000000"))
                 tabPhone.setTypeface(Typeface.DEFAULT)
 
-                emailInput.text = null
-                emailInput.hint = getString(R.string.email)
+                loginInput.text = null
+                loginInput.hint = getString(R.string.email)
+                loginInput.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+
             }
         }
 
@@ -55,15 +58,16 @@ class RegisterActivity : AppCompatActivity() {
                 tabPhone.setTextColor(Color.parseColor("#6d5a7f"))
                 tabPhone.setTypeface(Typeface.DEFAULT_BOLD)
 
-                emailInput.text = null
-                emailInput.hint = getString(R.string.reg_phone)
+                loginInput.text = null
+                loginInput.hint = getString(R.string.reg_phone)
+                loginInput.setInputType(InputType.TYPE_CLASS_PHONE)
             }
         }
 
         registerButton.setOnClickListener {
             val errors = mutableListOf<String>()
 
-            val contact = emailInput.text.toString().trim()
+            val contact = loginInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
             val passwordRepeat = passwordRepeatInput.text.toString().trim()
 
