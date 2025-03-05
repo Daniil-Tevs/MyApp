@@ -6,29 +6,35 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 
-class RegisterActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_register)
+class RegisterFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val root = inflater.inflate(R.layout.fragment_register, container, false)
+        val activity = requireActivity()
+        val navController = NavHostFragment.findNavController(this)
 
         var activeTab = "tabEmail"
-        val tabPhone = findViewById<TextView>(R.id.tabPhone);
-        val tabEmail = findViewById<TextView>(R.id.tabEmail)
+        val tabPhone = root.findViewById<TextView>(R.id.tabPhone);
+        val tabEmail = root.findViewById<TextView>(R.id.tabEmail)
 
-        val loginInput = findViewById<EditText>(R.id.emailInput)
-        val passwordInput = findViewById<EditText>(R.id.passwordInput)
-        val passwordRepeatInput = findViewById<EditText>(R.id.passwordRepeatInput)
+        val loginInput = root.findViewById<EditText>(R.id.emailInput)
+        val passwordInput = root.findViewById<EditText>(R.id.passwordInput)
+        val passwordRepeatInput = root.findViewById<EditText>(R.id.passwordRepeatInput)
 
-        val registerButton = findViewById<Button>(R.id.registerButton)
+        val registerButton = root.findViewById<Button>(R.id.registerButton)
 
 
         tabEmail.setOnClickListener {
@@ -97,19 +103,21 @@ class RegisterActivity : AppCompatActivity() {
 
             if (errors.isNotEmpty()) {
                 for (error in errors) {
-                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
                 }
             } else {
                 // Все проверки пройдены
 
-                val storage = getSharedPreferences("settings", Context.MODE_PRIVATE)
+                val storage = activity.getSharedPreferences("settings", Context.MODE_PRIVATE)
                 storage.edit().putString("login", contact).apply()
                 storage.edit().putString("password", password).apply()
                 storage.edit().putBoolean("is_auto_login", false).apply()
 
-                val intent = Intent(this, SplashActivity::class.java)
-                startActivity(intent)
+
+                navController.navigate(R.id.splashFragment)
             }
         }
+
+        return root
     }
 }

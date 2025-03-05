@@ -1,6 +1,7 @@
 package com.tevs.myapp
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,5 +29,16 @@ class ContentActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.splashFragment, R.id.loginFragment, R.id.registerFragment -> {
+                    bottomNav.visibility = View.GONE
+                }
+                else -> {
+                    bottomNav.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

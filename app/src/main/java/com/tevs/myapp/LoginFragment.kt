@@ -3,31 +3,30 @@ package com.tevs.myapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
 
-class LoginActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_login)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+class LoginFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val root = inflater.inflate(R.layout.fragment_login, container, false)
+        val activity = requireActivity()
+        val navController = NavHostFragment.findNavController(this)
 
-        val loginInput = findViewById<EditText>(R.id.loginInput)
-        val passwordInput = findViewById<EditText>(R.id.passwordInput)
-        val isAutoLoginInput = findViewById<CheckBox>(R.id.autoLogin)
+        val loginInput = root.findViewById<EditText>(R.id.loginInput)
+        val passwordInput = root.findViewById<EditText>(R.id.passwordInput)
+        val isAutoLoginInput = root.findViewById<CheckBox>(R.id.autoLogin)
 
-        val loginButton = findViewById<Button>(R.id.loginButton)
+        val loginButton = root.findViewById<Button>(R.id.loginButton)
 
         loginButton.setOnClickListener {
             val errors = mutableListOf<String>()
@@ -36,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordInput.text.toString().trim()
             val isAutoLogin = isAutoLoginInput.isChecked
 
-            val storage = getSharedPreferences("settings", Context.MODE_PRIVATE)
+            val storage = activity.getSharedPreferences("settings", Context.MODE_PRIVATE)
             val loginExist = storage.getString("login", "")
             val passwordExist = storage.getString("password", "")
 
@@ -56,17 +55,16 @@ class LoginActivity : AppCompatActivity() {
 
             if (errors.isNotEmpty()) {
                 for (error in errors) {
-                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
                 }
             } else {
                 // Все проверки пройдены
 
                 storage.edit().putBoolean("is_auto_login", isAutoLogin).apply()
 
-                val intent = Intent(this, ContentActivity::class.java)
-                startActivity(intent)
+                navController.navigate(R.id.firstFragment)
             }
         }
+        return root
     }
-
 }
