@@ -19,21 +19,18 @@ class SplashFragment : Fragment() {
         val navController = NavHostFragment.findNavController(this)
         val storage = requireActivity().getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-        val login = storage.getString("login", "")
-        val password = storage.getString("password", "")
+        val step = storage.getString("step", "")
         val isAutoLogin = storage.getBoolean("is_auto_login", false)
 
-        if (login == "" || password == "") {
+        if (step.isNullOrEmpty())
             navController.navigate(R.id.registerFragment)
-        }
-
-        if (login != "" && password != "") {
-            if (!isAutoLogin) {
-                navController.navigate(R.id.loginFragment)
-            } else {
+        else if (step == "login")
+            navController.navigate(R.id.loginFragment)
+        else if (step == "auth")
+            if (isAutoLogin)
                 navController.navigate(R.id.firstFragment)
-            }
-        }
+            else
+                navController.navigate(R.id.loginFragment)
 
         return root
     }

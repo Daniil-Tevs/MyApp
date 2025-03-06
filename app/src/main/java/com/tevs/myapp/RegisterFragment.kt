@@ -15,6 +15,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class RegisterFragment : Fragment() {
 
@@ -108,11 +110,35 @@ class RegisterFragment : Fragment() {
             } else {
                 // Все проверки пройдены
 
+                val firebaseAuth = Firebase.auth
                 val storage = activity.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                storage.edit().putString("login", contact).apply()
-                storage.edit().putString("password", password).apply()
-                storage.edit().putBoolean("is_auto_login", false).apply()
 
+                if (activeTab == "tabEmail") {
+                    firebaseAuth.createUserWithEmailAndPassword(contact, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                storage.edit().putString("step", "login").apply()
+                                navController.navigate(R.id.splashFragment)
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Ошибка регистрации: ${task.exception?.localizedMessage}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(
+                                context,
+                                "Ошибка регистрации: ${exception.localizedMessage}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                } else {
+                    storage.edit().putString("step", "login").apply()
+                    storage.edit().putString("login", contact).apply()
+                    storage.edit().putString("password", password).apply()
+                }
 
                 navController.navigate(R.id.splashFragment)
             }

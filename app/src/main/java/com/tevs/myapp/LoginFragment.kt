@@ -12,6 +12,8 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
     override fun onCreateView(
@@ -35,6 +37,8 @@ class LoginFragment : Fragment() {
             val password = passwordInput.text.toString().trim()
             val isAutoLogin = isAutoLoginInput.isChecked
 
+            val isPhone = login.startsWith("+")
+
             val storage = activity.getSharedPreferences("settings", Context.MODE_PRIVATE)
             val loginExist = storage.getString("login", "")
             val passwordExist = storage.getString("password", "")
@@ -49,10 +53,6 @@ class LoginFragment : Fragment() {
                 errors.add("Минимальная длина пароля 8 символов")
             }
 
-            if (login != loginExist || password != passwordExist) {
-                errors.add("Неверный логин или пароль")
-            }
-
             if (errors.isNotEmpty()) {
                 for (error in errors) {
                     Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
@@ -60,9 +60,39 @@ class LoginFragment : Fragment() {
             } else {
                 // Все проверки пройдены
 
-                storage.edit().putBoolean("is_auto_login", isAutoLogin).apply()
+                if (isPhone) {
+                    if (login == loginExist && password == passwordExist) {
+                        storage.edit().putBoolean("is_auto_login", isAutoLogin).apply()
+                        storage.edit().putString("step", "auth").apply()
+                        navController.navigate(R.id.firstFragment)
+                    } else
+                        Toast.makeText(activity, "Неверный логин или пароль", Toast.LENGTH_SHORT)
+                            .show()
+                } else {
+                    val firebaseAuth = Firebase.auth
 
-                navController.navigate(R.id.firstFragment)
+                    firebaseAuth.signInWithEmailAndPassword(login, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                storage.edit().putBoolean("is_auto_login", isAutoLogin).apply()
+                                storage.edit().putString("step", "auth").apply()
+                                navController.navigate(R.id.firstFragment)
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Неверный логин или пароль",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(
+                                context,
+                                "Неверный логин или пароль",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
             }
         }
         return root
